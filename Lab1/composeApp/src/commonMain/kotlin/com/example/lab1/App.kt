@@ -1,6 +1,5 @@
 package com.example.lab1
 
-import TimeZoneHelperImpl
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,6 +14,8 @@ import co.touchlab.kermit.Logger
 import lab1.composeapp.generated.resources.Res
 import lab1.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
+import com.example.lab1.TimeZoneHelperImpl
+
 
 @Composable
 fun App() {
