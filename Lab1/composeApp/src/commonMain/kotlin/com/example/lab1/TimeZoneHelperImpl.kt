@@ -8,6 +8,8 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 class TimeZoneHelperImpl : TimeZoneHelper {
 
@@ -16,43 +18,39 @@ class TimeZoneHelperImpl : TimeZoneHelper {
     }
 
     override fun currentTime(): String {
-        // Використовуємо повний шлях, щоб уникнути конфлікту з kotlin.time.Clock
-        val currentMoment = kotlinx.datetime.Clock.System.now()
-        val dateTime: LocalDateTime = currentMoment.toLocalDateTime(TimeZone.currentSystemDefault())
+        val currentMoment: Instant = Clock.System.now()
+        val dateTime: LocalDateTime = currentMoment
+            .toLocalDateTime(TimeZone.currentSystemDefault())
         return formatDateTime(dateTime)
     }
 
     override fun currentTimeZone(): String {
-        return TimeZone.currentSystemDefault().toString()
+        val currentTimeZone = TimeZone.currentSystemDefault()
+        return currentTimeZone.toString()
     }
 
     override fun hoursFromTimeZone(otherTimeZoneId: String): Double {
         val currentTimeZone = TimeZone.currentSystemDefault()
-        val now = kotlinx.datetime.Clock.System.now()
+        val currentUTCInstant: Instant = Clock.System.now()
         val otherTimeZone = TimeZone.of(otherTimeZoneId)
-
-        val currentDateTime = now.toLocalDateTime(currentTimeZone)
-        val currentOtherDateTime = now.toLocalDateTime(otherTimeZone)
-
-        return abs((currentDateTime.hour - currentOtherDateTime.hour).toDouble())
+        val currentDateTime: LocalDateTime = currentUTCInstant.toLocalDateTime(currentTimeZone)
+        val currentOtherDateTime: LocalDateTime = currentUTCInstant.toLocalDateTime(otherTimeZone)
+        return abs((currentDateTime.hour - currentOtherDateTime.hour) * 1.0)
     }
 
     override fun getTime(timezoneId: String): String {
         val timezone = TimeZone.of(timezoneId)
-        val now = kotlinx.datetime.Clock.System.now()
-        val dateTime = now.toLocalDateTime(timezone)
+        val currentMoment: Instant = Clock.System.now()
+        val dateTime: LocalDateTime = currentMoment.toLocalDateTime(timezone)
         return formatDateTime(dateTime)
     }
 
     override fun getDate(timezoneId: String): String {
         val timezone = TimeZone.of(timezoneId)
-        val now = kotlinx.datetime.Clock.System.now()
-        val dateTime = now.toLocalDateTime(timezone)
-
-        val dayName = dateTime.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }
-        val monthName = dateTime.month.name.lowercase().replaceFirstChar { it.uppercase() }
-
-        return "$dayName, $monthName ${dateTime.dayOfMonth}"
+        val currentMoment: Instant = Clock.System.now()
+        val dateTime: LocalDateTime = currentMoment.toLocalDateTime(timezone)
+        return "${dateTime.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }}, " +
+                "${dateTime.month.name.lowercase().replaceFirstChar { it.uppercase() }} ${dateTime.dayOfMonth}"
     }
 
     override fun search(
@@ -63,17 +61,25 @@ class TimeZoneHelperImpl : TimeZoneHelper {
         val goodHours = mutableListOf<Int>()
         val timeRange = IntRange(max(0, startHour), min(23, endHour))
         val currentTimeZone = TimeZone.currentSystemDefault()
-
         for (hour in timeRange) {
             var isGoodHour = false
             for (zone in timezoneStrings) {
                 val timezone = TimeZone.of(zone)
-                if (timezone == currentTimeZone) continue
-
-                if (!isValid(timeRange, hour, currentTimeZone, timezone)) {
+                if (timezone == currentTimeZone) {
+                    continue
+                }
+                if (!isValid(
+                        timeRange = timeRange,
+                        hour = hour,
+                        currentTimeZone = currentTimeZone,
+                        otherTimeZone = timezone
+                    )
+                ) {
+                    Logger.d("Hour $hour is not valid for time range")
                     isGoodHour = false
                     break
                 } else {
+                    Logger.d("Hour $hour is Valid for time range")
                     isGoodHour = true
                 }
             }
@@ -85,11 +91,19 @@ class TimeZoneHelperImpl : TimeZoneHelper {
     }
 
     private fun formatDateTime(dateTime: LocalDateTime): String {
-        val minute = dateTime.minute.toString().padStart(2, '0')
+        val stringBuilder = StringBuilder()
+        val minute = dateTime.minute
         var hour = dateTime.hour % 12
         if (hour == 0) hour = 12
         val amPm = if (dateTime.hour < 12) " am" else " pm"
-        return "$hour:$minute$amPm"
+        stringBuilder.append(hour.toString())
+        stringBuilder.append(":")
+        if (minute < 10) {
+            stringBuilder.append('0')
+        }
+        stringBuilder.append(minute.toString())
+        stringBuilder.append(amPm)
+        return stringBuilder.toString()
     }
 
     private fun isValid(
@@ -98,19 +112,23 @@ class TimeZoneHelperImpl : TimeZoneHelper {
         currentTimeZone: TimeZone,
         otherTimeZone: TimeZone
     ): Boolean {
-        val now = kotlinx.datetime.Clock.System.now()
-        val currentOtherDateTime = now.toLocalDateTime(otherTimeZone)
-
+        if (hour !in timeRange) {
+            return false
+        }
+        val currentUTCInstant: Instant = Clock.System.now()
+        val currentOtherDateTime: LocalDateTime = currentUTCInstant.toLocalDateTime(otherTimeZone)
         val otherDateTimeWithHour = LocalDateTime(
             currentOtherDateTime.year,
-            currentOtherDateTime.monthNumber,
-            currentOtherDateTime.dayOfMonth,
-            hour, 0, 0, 0
+            currentOtherDateTime.month,
+            currentOtherDateTime.day,
+            hour,
+            0,
+            0,
+            0
         )
-
         val localInstant = otherDateTimeWithHour.toInstant(currentTimeZone)
         val convertedTime = localInstant.toLocalDateTime(otherTimeZone)
-
+        Logger.d("Hour $hour in Time Range ${otherTimeZone.id} is ${convertedTime.hour}")
         return convertedTime.hour in timeRange
     }
 }
