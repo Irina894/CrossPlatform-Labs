@@ -8,18 +8,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun ProgressBarScreen() {
-    var progress by remember { mutableStateOf(0.3f) }
+    var progress by remember { mutableStateOf(0.35f) }
 
     Column(
         modifier = Modifier
@@ -28,18 +25,31 @@ fun ProgressBarScreen() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Приклад лінійного та кругового індикаторів прогресу.",
+            text = "Determinate та indeterminate індикатори прогресу.",
             style = MaterialTheme.typography.bodyLarge
         )
 
+        Text("Linear determinate")
         LinearProgressIndicator(progress = { progress })
+
+        Text("Linear indeterminate")
+        LinearProgressIndicator()
+
+        Text("Circular determinate")
+        CircularProgressIndicator(progress = { progress })
+
+        Text("Circular indeterminate")
         CircularProgressIndicator()
 
         Button(onClick = {
             progress += 0.1f
             if (progress > 1f) progress = 0f
         }) {
-            Text("Change progress")
+            Text("Increase progress")
+        }
+
+        OutlinedButton(onClick = { progress = 0f }) {
+            Text("Reset progress")
         }
     }
 }

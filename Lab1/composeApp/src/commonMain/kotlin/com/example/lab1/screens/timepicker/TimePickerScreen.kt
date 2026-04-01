@@ -8,6 +8,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
@@ -35,14 +36,21 @@ fun TimePickerScreen() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Приклад діалогу вибору часу.",
+            text = "Діалог вибору часу з відображенням результату.",
             style = MaterialTheme.typography.bodyLarge
         )
 
-        Text("Selected time: $selectedTimeText")
+        Text(
+            text = "Selected time: $selectedTimeText",
+            style = MaterialTheme.typography.bodyLarge
+        )
 
         Button(onClick = { showDialog = true }) {
             Text("Open time picker")
+        }
+
+        OutlinedButton(onClick = { selectedTimeText = "No time selected" }) {
+            Text("Clear time")
         }
     }
 
@@ -53,7 +61,8 @@ fun TimePickerScreen() {
                 TextButton(
                     onClick = {
                         selectedTimeText =
-                            "${timePickerState.hour.toString().padStart(2, '0')}:${timePickerState.minute.toString().padStart(2, '0')}"
+                            "${timePickerState.hour.toString().padStart(2, '0')}:" +
+                                    "${timePickerState.minute.toString().padStart(2, '0')}"
                         showDialog = false
                     }
                 ) {

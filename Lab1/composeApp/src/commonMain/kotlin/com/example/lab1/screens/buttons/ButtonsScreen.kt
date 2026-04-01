@@ -9,6 +9,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -19,23 +20,31 @@ fun ButtonsScreen() {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         Text(
-            text = "Приклади різних типів кнопок.",
+            text = "Різні варіанти кнопок Material 3.",
             style = MaterialTheme.typography.bodyLarge
         )
 
         Button(onClick = {}) {
-            Text("Filled Button")
+            Text("Filled button")
         }
 
         OutlinedButton(onClick = {}) {
-            Text("Outlined Button")
+            Text("Outlined button")
         }
 
         ElevatedButton(onClick = {}) {
-            Text("Elevated Button")
+            Text("Elevated button")
+        }
+
+        TextButton(onClick = {}) {
+            Text("Text button")
+        }
+
+        Button(onClick = {}, enabled = false) {
+            Text("Disabled button")
         }
     }
 }

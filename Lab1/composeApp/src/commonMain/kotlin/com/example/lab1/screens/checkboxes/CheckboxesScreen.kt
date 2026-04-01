@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 fun CheckboxesScreen() {
     var checked1 by remember { mutableStateOf(false) }
     var checked2 by remember { mutableStateOf(true) }
+    var checked3 by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -29,7 +30,7 @@ fun CheckboxesScreen() {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = "Приклади прапорців зі зміною стану.",
+            text = "Приклади активних і неактивних checkbox.",
             style = MaterialTheme.typography.bodyLarge
         )
 
@@ -38,7 +39,7 @@ fun CheckboxesScreen() {
                 checked = checked1,
                 onCheckedChange = { checked1 = it }
             )
-            Text("First checkbox")
+            Text("Unchecked / checked")
         }
 
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -46,7 +47,33 @@ fun CheckboxesScreen() {
                 checked = checked2,
                 onCheckedChange = { checked2 = it }
             )
-            Text("Second checkbox")
+            Text("Initially checked")
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = checked3,
+                onCheckedChange = { checked3 = it }
+            )
+            Text("Another example")
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = true,
+                onCheckedChange = null,
+                enabled = false
+            )
+            Text("Disabled checked")
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = false,
+                onCheckedChange = null,
+                enabled = false
+            )
+            Text("Disabled unchecked")
         }
     }
 }

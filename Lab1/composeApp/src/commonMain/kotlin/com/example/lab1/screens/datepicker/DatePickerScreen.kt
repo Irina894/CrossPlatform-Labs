@@ -9,6 +9,7 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -38,14 +39,23 @@ fun DatePickerScreen() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Приклад діалогу вибору дати.",
+            text = "Діалог вибору дати з відображенням вибраного значення.",
             style = MaterialTheme.typography.bodyLarge
         )
 
-        Text("Selected date: $selectedDateText")
+        Text(
+            text = "Selected date: $selectedDateText",
+            style = MaterialTheme.typography.bodyLarge
+        )
 
         Button(onClick = { showDialog = true }) {
             Text("Open date picker")
+        }
+
+        OutlinedButton(
+            onClick = { selectedDateText = "No date selected" }
+        ) {
+            Text("Clear date")
         }
     }
 

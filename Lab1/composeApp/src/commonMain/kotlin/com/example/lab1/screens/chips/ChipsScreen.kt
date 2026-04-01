@@ -11,7 +11,11 @@ import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
@@ -26,10 +30,14 @@ fun ChipsScreen() {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("Chips", style = MaterialTheme.typography.titleLarge)
+        Text(
+            text = "Кілька типів chips для різних сценаріїв.",
+            style = MaterialTheme.typography.bodyLarge
+        )
 
         FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             AssistChip(
                 onClick = {},
@@ -44,13 +52,13 @@ fun ChipsScreen() {
             FilterChip(
                 selected = filterSelected,
                 onClick = { filterSelected = !filterSelected },
-                label = { Text("Filter chip") }
+                label = { Text(if (filterSelected) "Selected filter" else "Filter chip") }
             )
 
             InputChip(
                 selected = inputSelected,
                 onClick = { inputSelected = !inputSelected },
-                label = { Text("Input chip") }
+                label = { Text(if (inputSelected) "Selected input" else "Input chip") }
             )
         }
     }
