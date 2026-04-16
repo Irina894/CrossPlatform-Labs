@@ -3,7 +3,7 @@ package com.example.lab1.navigation
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,7 +31,7 @@ import com.example.lab1.screens.timepicker.TimePickerScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppNavigation() {
+fun Lab3Navigation() {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route ?: AppScreen.Main.name
@@ -41,13 +41,13 @@ fun AppNavigation() {
         AppScreen.Buttons.name -> "Buttons"
         AppScreen.Checkboxes.name -> "Checkboxes"
         AppScreen.Chips.name -> "Chips"
-        AppScreen.DatePicker.name -> "Datepicker dialog"
+        AppScreen.DatePicker.name -> "Date picker dialog"
         AppScreen.Dialog.name -> "Dialog"
         AppScreen.Divider.name -> "Divider"
         AppScreen.ProgressBar.name -> "Progress bar"
         AppScreen.RadioButtons.name -> "Radio buttons"
         AppScreen.Switch.name -> "Switch"
-        AppScreen.TimePicker.name -> "Timepicker dialog"
+        AppScreen.TimePicker.name -> "Time picker dialog"
         else -> "Lab 3"
     }
 
@@ -59,7 +59,7 @@ fun AppNavigation() {
                     if (currentRoute != AppScreen.Main.name) {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(
-                                imageVector = Icons.Default.ArrowBack,
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Back"
                             )
                         }
