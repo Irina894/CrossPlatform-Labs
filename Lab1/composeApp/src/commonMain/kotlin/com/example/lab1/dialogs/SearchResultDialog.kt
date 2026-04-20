@@ -13,36 +13,40 @@ fun SearchResultDialog(
     resultHours: List<Int>,
     onDismiss: () -> Unit
 ) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text("OK")
-            }
-        },
-        title = {
-            Text("Meeting time result")
-        },
-        text = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                if (resultHours.isEmpty()) {
-                    Text(
-                        text = "No suitable meeting hours were found for the selected interval.",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                } else {
-                    Text(
-                        text = "Available hours:",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
+    MeetingDialogWrapper(
+        onDismiss = onDismiss
+    ) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            confirmButton = {
+                TextButton(onClick = onDismiss) {
+                    Text("OK")
+                }
+            },
+            title = {
+                Text("Meeting time result")
+            },
+            text = {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    if (resultHours.isEmpty()) {
+                        Text(
+                            text = "No suitable meeting hours were found for the selected interval.",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    } else {
+                        Text(
+                            text = "Available hours:",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
 
-                    resultHours.forEach { hour ->
-                        Text(hour.toString().padStart(2, '0') + ":00")
+                        resultHours.forEach { hour ->
+                            Text(hour.toString().padStart(2, '0') + ":00")
+                        }
                     }
                 }
             }
-        }
-    )
+        )
+    }
 }

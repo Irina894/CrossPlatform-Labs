@@ -5,9 +5,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +22,10 @@ fun TimeIntervalPicker(
     onIncrease: () -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 1.dp
+        )
     ) {
         Row(
             modifier = Modifier
@@ -38,17 +42,17 @@ fun TimeIntervalPicker(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = onDecrease) {
+                TextButton(onClick = onDecrease) {
                     Text("-")
                 }
 
                 Text(
                     text = value.toString().padStart(2, '0') + ":00",
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(horizontal = 8.dp)
+                    modifier = Modifier.padding(horizontal = 4.dp)
                 )
 
-                IconButton(onClick = onIncrease) {
+                TextButton(onClick = onIncrease) {
                     Text("+")
                 }
             }

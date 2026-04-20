@@ -3,9 +3,7 @@ package com.example.lab1.navigation
 enum class AppScreen {
     Root,
     Lab3,
-    Lab4Home,
-    TimeZones,
-    MeetingTime,
+    Lab4,
 
     Main,
     Buttons,

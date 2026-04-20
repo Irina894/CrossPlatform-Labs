@@ -26,54 +26,60 @@ fun TimeZonePickerDialog(
 ) {
     val tempSelected = remember { selectedZones.toMutableStateList() }
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Text("Choose timezones")
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onSave(tempSelected)
-                    onDismiss()
+    AddTimeDialogWrapper(
+        onDismiss = onDismiss
+    ) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = {
+                Text("Choose timezones")
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onSave(tempSelected)
+                        onDismiss()
+                    }
+                ) {
+                    Text("Save")
                 }
-            ) {
-                Text("Save")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancel")
-            }
-        },
-        text = {
-            LazyColumn {
-                items(allZones) { zone ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = zone,
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.weight(1f)
-                        )
+            },
+            dismissButton = {
+                TextButton(onClick = onDismiss) {
+                    Text("Cancel")
+                }
+            },
+            text = {
+                LazyColumn {
+                    items(allZones) { zone ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = zone,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.weight(1f)
+                            )
 
-                        Checkbox(
-                            checked = zone in tempSelected,
-                            onCheckedChange = { checked ->
-                                if (checked) {
-                                    if (zone !in tempSelected) tempSelected.add(zone)
-                                } else {
-                                    tempSelected.remove(zone)
+                            Checkbox(
+                                checked = zone in tempSelected,
+                                onCheckedChange = { checked ->
+                                    if (checked) {
+                                        if (zone !in tempSelected) {
+                                            tempSelected.add(zone)
+                                        }
+                                    } else {
+                                        tempSelected.remove(zone)
+                                    }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }
-        }
-    )
+        )
+    }
 }

@@ -1,3 +1,4 @@
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -13,7 +14,19 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
+    jvm()
+
+    wasmJs {
+        browser()
+        binaries.executable()
+    }
+
+    js(IR) {
+        browser()
+        binaries.executable()
+    }
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -21,13 +34,19 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
-        }
-    }
-    
+        }}
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
+        }
+        wasmJsMain.dependencies {
+            implementation(npm("@js-joda/timezone", "2.25.1"))
+        }
+
+        jsMain.dependencies {
+            implementation(npm("@js-joda/timezone", "2.25.1"))
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -43,6 +62,33 @@ kotlin {
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
             implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.0-beta03")
         }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation(libs.compose.ui)
+                implementation(libs.compose.runtime)
+                implementation(libs.compose.foundation)
+                implementation(libs.compose.material3) // у вас у тоml саме material3
+                implementation(libs.compose.components.resources)
+
+                // Додатково, якщо ви використовуєте корутини або дати
+                implementation(libs.datetime)
+            }
+        }
+        val wasmJsMain by getting {
+            dependencies {
+                implementation(npm("@js-joda/timezone", "2.25.1"))
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                implementation(npm("@js-joda/timezone", "2.25.1"))
+            }
+        }
+
+
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
@@ -60,16 +106,19 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -80,3 +129,14 @@ dependencies {
     debugImplementation(libs.compose.uiTooling)
 }
 
+compose.desktop {
+    application {
+        mainClass = "com.example.lab1.MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Exe, TargetFormat.Dmg, TargetFormat.Deb)
+            packageName = "CrossPlatformLabs"
+            packageVersion = "1.0.0"
+        }
+    }
+}

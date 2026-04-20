@@ -8,9 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.lab1.TimeZoneHelperImpl
 import com.example.lab1.screens.home.HomeScreen
-import com.example.lab1.screens.meeting.MeetingTimeScreen
 import com.example.lab1.screens.root.RootScreen
-import com.example.lab1.screens.timezones.TimeZonesScreen
 
 @Composable
 fun MainAppNavigation() {
@@ -28,7 +26,7 @@ fun MainAppNavigation() {
         composable(AppScreen.Root.name) {
             RootScreen(
                 onLab3Click = { navController.navigate(AppScreen.Lab3.name) },
-                onLab4Click = { navController.navigate(AppScreen.Lab4Home.name) }
+                onLab4Click = { navController.navigate(AppScreen.Lab4.name) }
             )
         }
 
@@ -36,22 +34,10 @@ fun MainAppNavigation() {
             Lab3Navigation()
         }
 
-        composable(AppScreen.Lab4Home.name) {
+        composable(AppScreen.Lab4.name) {
             HomeScreen(
-                onTimeZonesClick = { navController.navigate(AppScreen.TimeZones.name) },
-                onMeetingClick = { navController.navigate(AppScreen.MeetingTime.name) }
-            )
-        }
-
-        composable(AppScreen.TimeZones.name) {
-            TimeZonesScreen(
-                selectedZones = selectedZones
-            )
-        }
-
-        composable(AppScreen.MeetingTime.name) {
-            MeetingTimeScreen(
-                selectedZones = selectedZones
+                selectedZones = selectedZones,
+                onBackClick = { navController.popBackStack() }
             )
         }
     }
