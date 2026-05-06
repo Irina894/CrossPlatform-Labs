@@ -1,0 +1,11 @@
+abi_version=2.3.0
+builtins_platform=WASM
+compiler_version=2.3.20
+ir_signature_versions=1,2
+jsOutputName=Lab6-composeApp
+language_features=+AllowAnyAsAnActualTypeForExpectInterface +JsAllowImplementingFunctionInterface +MultiPlatformProjects
+metadata_version=2.3.0
+serializedIrFileFingerprints=168kz1n1ogyt8.3s31wjzeknqgl 39dz7qu4up3ar.1rb3ieqw9p3hs 2xtunk6wkyj6w.2co46kod41row 36kfx3qv2x7xy.jk9c8ovlfx7j 2txam6t1yc5px.j67b2yrf8y2o a78idqxjqxqy.309n0dijy8p8p 1j68fqwt3phyw.261w03xfemdzy 3bvdhb8uybonf.25zutsrpss13c 3pvgfzmhf51u.2hnybddu6a0ae 1oo7fdhv74tdr.2bfjcf8q6tsxg o5v6iugh03ka.v1atuut08ib1 2gdeuznekouns.ah6m6vb4jygg 2hjpubxstewt1.2rnr3gxpptn45
+serializedKlibFingerprint=g7767sdac3ix.3el86rprqh2mb
+unique_name=Lab6\:composeApp
+wasm_targets=wasm-js

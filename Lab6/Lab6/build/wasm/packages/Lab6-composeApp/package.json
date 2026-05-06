@@ -1,0 +1,12 @@
+{
+  "name": "Lab6-composeApp",
+  "version": "0.0.0-unspecified",
+  "main": "kotlin/Lab6-composeApp.mjs",
+  "devDependencies": {},
+  "dependencies": {
+    "@js-joda/core": "3.2.0"
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": []
+}
